@@ -32,7 +32,6 @@ std::string PET_1TCM_FwdModel::GetDescription() const
 static OptionSpec OPTIONS[] = {
     { "K1", OPT_FLOAT, "Flow in min-1", OPT_NONREQ, "0.01" },
     { "k2", OPT_FLOAT, "Flow in min-1", OPT_NONREQ, "0.1" },
-    { "vB", OPT_FLOAT, "Blood volume in 1", OPT_NONREQ, "0.05" },
     //{ "fp", OPT_FLOAT, "Flow in min-1", OPT_NONREQ, "0.5" },
     //{ "ps", OPT_FLOAT, "Permeability surface area product in min-1", OPT_NONREQ, "0.5" },
     //{ "vp", OPT_FLOAT, "Plasma volume in decimal between zero and one", OPT_NONREQ, "0.5" },
@@ -55,9 +54,8 @@ void PET_1TCM_FwdModel::Initialize(FabberRunData &rundata)
     PETFwdModel::Initialize(rundata);
 
     // Initial values of main parameters
-    m_K1 = rundata.GetDoubleDefault("K1", 0.05);
-    m_k2 = rundata.GetDoubleDefault("k2", 0.05);
-    m_vB = rundata.GetDoubleDefault("vB", 0.03);
+    m_K1 = rundata.GetDoubleDefault("K1", 0.5);
+    m_k2 = rundata.GetDoubleDefault("k2", 0.5);
 
     // Initial values of main parameters
     //m_fp = rundata.GetDoubleDefault("fp", 0.5);
@@ -77,7 +75,6 @@ void PET_1TCM_FwdModel::GetParameterDefaults(std::vector<Parameter> &params) con
     int p = 0;
     params.push_back(Parameter(p++, "K1", DistParams(m_K1, 1e5), DistParams(m_K1, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     params.push_back(Parameter(p++, "k2", DistParams(m_k2, 1e5), DistParams(m_k2, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
-    params.push_back(Parameter(p++, "vB", DistParams(m_vB, 1e5), DistParams(m_vB, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     //params.push_back(Parameter(p++, "fp", DistParams(m_fp, 1e5), DistParams(m_fp, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     //params.push_back(Parameter(p++, "ps", DistParams(m_ps, 1e5), DistParams(m_ps, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     //params.push_back(Parameter(p++, "ve", DistParams(m_ve, 1e5), DistParams(m_ve, 1), PRIOR_NORMAL, TRANSFORM_FRACTIONAL()));
@@ -155,7 +152,6 @@ void PET_1TCM_FwdModel::Evaluate(const ColumnVector &params, ColumnVector &resul
 
     double K1 = params(p++);
     double k2 = params(p++);
-    double vB = params(p++);
 
     /*
     double fp = params(p++);
@@ -210,8 +206,7 @@ void PET_1TCM_FwdModel::Evaluate(const ColumnVector &params, ColumnVector &resul
     }
     */
 
-    //result = K1 * convolution_result;
-    result = (1 - vB) * K1 * convolution_result + vB * m_aif;
+    result = K1 * convolution_result;
     //result = K1 * exp_results;
 
     for (int i = 1; i <= data.Nrows(); i++)
