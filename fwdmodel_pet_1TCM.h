@@ -36,7 +36,7 @@ public:
     
 private:
     // Initial values of model parameters - always inferred
-    double m_K1, m_k2;
+    double m_K1, m_k2, m_vB;
     //double m_fp, m_ps, m_ve, m_vp;
 
     // Convolution method

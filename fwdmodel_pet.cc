@@ -24,6 +24,7 @@ using namespace NEWMAT;
 static OptionSpec OPTIONS[] = {
     { "K1", OPT_FLOAT, "K1 transfer rate", OPT_REQ, "" },
     { "k2", OPT_FLOAT, "k2 transfer rate", OPT_REQ, "" },
+    { "vB", OPT_FLOAT, "Volume of blood (between 0 and 1)", OPT_REQ, "" },
     { "aif", OPT_STR, "Source of AIF function: signal=User-supplied vascular signal", OPT_REQ, "none"},
     { "aif-data", OPT_MATRIX,
         "File containing single-column ASCII data defining the AIF. For aif=signal, this is the vascular signal curve.",
