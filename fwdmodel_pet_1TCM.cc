@@ -75,9 +75,15 @@ void PET_1TCM_FwdModel::GetParameterDefaults(std::vector<Parameter> &params) con
 
     // Basic model parameters
     int p = 0;
-    params.push_back(Parameter(p++, "K1", DistParams(m_K1, 1e5), DistParams(m_K1, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
-    params.push_back(Parameter(p++, "k2", DistParams(m_k2, 1e5), DistParams(m_k2, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
-    params.push_back(Parameter(p++, "vB", DistParams(m_vB, 1e5), DistParams(m_vB, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
+    // This set of parameters worked
+    //params.push_back(Parameter(p++, "K1", DistParams(m_K1, 1e5), DistParams(m_K1, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
+    //params.push_back(Parameter(p++, "k2", DistParams(m_k2, 1e5), DistParams(m_k2, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
+    //params.push_back(Parameter(p++, "vB", DistParams(m_vB, 1e5), DistParams(m_vB, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
+    
+
+    params.push_back(Parameter(p++, "K1", DistParams(m_K1, 100), DistParams(m_K1, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
+    params.push_back(Parameter(p++, "k2", DistParams(m_k2, 100), DistParams(m_k2, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
+    params.push_back(Parameter(p++, "vB", DistParams(m_vB, 100), DistParams(m_vB, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     //params.push_back(Parameter(p++, "fp", DistParams(m_fp, 1e5), DistParams(m_fp, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     //params.push_back(Parameter(p++, "ps", DistParams(m_ps, 1e5), DistParams(m_ps, 100), PRIOR_NORMAL, TRANSFORM_LOG()));
     //params.push_back(Parameter(p++, "ve", DistParams(m_ve, 1e5), DistParams(m_ve, 1), PRIOR_NORMAL, TRANSFORM_FRACTIONAL()));
