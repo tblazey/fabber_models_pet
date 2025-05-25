@@ -7,12 +7,14 @@
 
 #pragma once
 
-#include "fabber_core/fwdmodel.h"
+#include <fabber_core/fwdmodel.h>
 
-#include <newmat.h>
+#include <armawrap/newmat.h>
 
 #include <string>
 #include <vector>
+
+using namespace NEWMAT;
 
 /**
  * Base class for PET models as they share options
@@ -30,22 +32,17 @@ public:
 
     virtual void Initialize(FabberRunData &rundata);
     virtual void GetParameterDefaults(std::vector<Parameter> &params) const;
-    
     virtual void InitVoxelPosterior(MVNDist &posterior) const;
     
-protected:
-    // Mandatory PET configuration
-    // Inference flags
-    bool m_infer_delay, m_infer_t10, m_infer_sig0;
+    virtual Matrix convolve_matrix(const ColumnVector &kernel) const;
+    virtual Matrix interp_matrix(const ColumnVector &x, const ColumnVector &x_p) const;
     
-    // AIF as concentration curve
-    std::string m_aif_type;
-    NEWMAT::ColumnVector m_aif, m_time;
+protected:
 
-    // Other options
-    mutable int m_sig0_idx;
-    bool m_auto_init_delay;
-
-    double m_dt;
+    ColumnVector m_kernel_time;
+    ColumnVector m_aif_pet;
+    Matrix m_c_mat;   
+    double m_init_vB;
+    double m_density;
 
 };
